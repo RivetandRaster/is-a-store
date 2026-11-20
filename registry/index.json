@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-11-20T13:55:00.000Z",
+  "rootDomain": "is-a.store",
+  "dnsLiveMode": false,
+  "total": 2,
+  "domains": [
+    {
+      "subdomain": "demo",
+      "fqdn": "demo.is-a.store",
+      "description": "Reference storefront demo illustrating a valid CNAME subdomain configuration on GitHub Pages.",
+      "repo": "https://github.com/RivetandRaster/is-a-store",
+      "owner": "RivetandRaster",
+      "recordTypes": [
+        "CNAME"
+      ],
+      "record": {
+        "CNAME": "rivetandraster.github.io"
+      },
+      "destination": "rivetandraster.github.io",
+      "proxied": false,
+      "status": "indexed",
+      "suspensionReason": null
+    },
+    {
+      "subdomain": "docs",
+      "fqdn": "docs.is-a.store",
+      "description": "Official documentation and developer portal for the is-a.store open-source subdomain registry.",
+      "repo": "https://github.com/RivetandRaster/is-a-store",
+      "owner": "RivetandRaster",
+      "recordTypes": [
+        "CNAME"
+      ],
+      "record": {
+        "CNAME": "rivetandraster.github.io"
+      },
+      "destination": "rivetandraster.github.io",
+      "proxied": false,
+      "status": "indexed",
+      "suspensionReason": null
+    }
+  ]
+}

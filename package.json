@@ -1,0 +1,18 @@
+{
+  "name": "is-a-store",
+  "version": "1.0.0",
+  "description": "Free, open-source, GitHub-hosted subdomain registry platform inspired by is-a.dev",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "validate": "node scripts/validate.js",
+    "check-duplicates": "node scripts/check-duplicates.js",
+    "build-index": "node scripts/build-index.js",
+    "sync-dns": "node scripts/sync-dns.js",
+    "test": "node scripts/test.js"
+  },
+  "license": "MIT"
+}

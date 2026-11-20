@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-11-20T13:55:00.000Z",
+  "rootDomain": "is-a.store",
+  "dnsLiveMode": false,
+  "totalRegistered": 2,
+  "activeCount": 2,
+  "suspendedCount": 0,
+  "uniqueOwners": 1,
+  "recordTypes": {
+    "CNAME": 2,
+    "A": 0,
+    "AAAA": 0,
+    "TXT": 0,
+    "MX": 0
+  }
+}

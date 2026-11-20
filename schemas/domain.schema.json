@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rivetandraster.github.io/is-a-store/schemas/domain.schema.json",
+  "title": "is-a.store Subdomain Record",
+  "description": "Schema for a single subdomain registration JSON file stored in registry/domains/<subdomain>.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["description", "owner", "record"],
+  "properties": {
+    "description": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200,
+      "description": "Short summary of the website or project hosted on this subdomain."
+    },
+    "repo": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 250,
+      "description": "Optional HTTPS URL to the public repository or project homepage."
+    },
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["github"],
+      "properties": {
+        "github": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$",
+          "description": "GitHub username of the subdomain owner."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 120,
+          "description": "Optional public contact email (remember Git history is public)."
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "DNS records for this subdomain. CNAME cannot be combined with any other record type.",
+      "properties": {
+        "A": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "description": "Public IPv4 addresses."
+        },
+        "AAAA": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "ipv6"
+          },
+          "description": "Public IPv6 addresses."
+        },
+        "CNAME": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 253,
+          "description": "Target canonical hostname (FQDN without protocol or path)."
+        },
+        "TXT": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": "TXT records for verification or metadata."
+        },
+        "MX": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["target", "priority"],
+            "properties": {
+              "target": {
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 253
+              },
+              "priority": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 65535
+              }
+            }
+          },
+          "description": "Mail exchanger records with target hostname and priority."
+        }
+      }
+    },
+    "proxied": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable Cloudflare HTTP proxy (only valid for A, AAAA, or CNAME)."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "suspended"],
+      "default": "active",
+      "description": "Operational state managed by registry maintainers."
+    },
+    "suspensionReason": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 300,
+      "description": "Required explanation when status is set to suspended."
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "description": "Reference storefront demo illustrating a valid CNAME subdomain configuration on GitHub Pages.",
+  "repo": "https://github.com/RivetandRaster/is-a-store",
+  "owner": {
+    "github": "RivetandRaster"
+  },
+  "record": {
+    "CNAME": "rivetandraster.github.io"
+  },
+  "proxied": false,
+  "status": "active"
+}

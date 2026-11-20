@@ -1,0 +1,12 @@
+{
+  "description": "Official documentation and developer portal for the is-a.store open-source subdomain registry.",
+  "repo": "https://github.com/RivetandRaster/is-a-store",
+  "owner": {
+    "github": "RivetandRaster"
+  },
+  "record": {
+    "CNAME": "rivetandraster.github.io"
+  },
+  "proxied": false,
+  "status": "active"
+}
