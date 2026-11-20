@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>is-a.store — Open-Source GitHub-Hosted Subdomain Registry</title>
+  <meta name="description" content="Request free developer subdomains via GitHub Pull Requests with automated DNS validation, strict security checks, and transparent open-source governance." />
+  <meta name="theme-color" content="#0b0d12" />
+  <meta property="og:title" content="is-a.store — Open-Source Subdomain Registry" />
+  <meta property="og:description" content="Git-backed subdomain registry with automated DNS validation, duplicate detection, and pull-request workflows." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div id="staging-banner" class="status-banner" role="status" hidden>
+    <div class="container status-banner-inner">
+      <span class="status-dot status-dot-warn" aria-hidden="true"></span>
+      <p id="staging-banner-text"></p>
+      <a href="#docs" class="banner-link" data-doc-tab="registration">Read feasibility &amp; setup &rarr;</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand" aria-label="is-a.store Home">
+        <img src="assets/images/favicon.svg" alt="" width="28" height="28" />
+        <span class="brand-name" id="brand-domain">is-a.store</span>
+        <span class="brand-pill" id="mode-pill">Registry</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#register">Register</a>
+        <a href="#directory">Directory</a>
+        <a href="#docs">Docs</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="header-actions">
+        <a
+          id="repo-header-link"
+          href="https://github.com/RivetandRaster/is-a-store"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-ghost btn-sm"
+        >
+          GitHub
+        </a>
+        <button
+          id="theme-toggle"
+          type="button"
+          class="btn btn-icon"
+          aria-label="Toggle dark and light theme"
+          title="Switch theme"
+        >
+          <span id="theme-icon" aria-hidden="true">&#9728;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section id="top" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-badge">
+          <span class="status-dot status-dot-accent" aria-hidden="true"></span>
+          <span>100% Open-Source &middot; Pull-Request Driven &middot; Zero-Server Architecture</span>
+        </div>
+
+        <h1 class="hero-title">
+          Free developer subdomains, <span class="gradient-text">versioned in Git.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Claim a clean <code id="hero-example-domain">yourname.is-a.store</code> subdomain for your storefront, portfolio, or open-source project. Submit a JSON record via GitHub Pull Request — automated checks validate DNS safety before merge.
+        </p>
+
+        <!-- Quick Availability Search -->
+        <form id="hero-search-form" class="hero-checker" novalidate>
+          <label for="hero-subdomain-input" class="sr-only">Check subdomain availability</label>
+          <div class="checker-input-group">
+            <input
+              id="hero-subdomain-input"
+              type="text"
+              inputmode="url"
+              autocomplete="off"
+              autocapitalize="none"
+              spellcheck="false"
+              placeholder="your-project"
+              maxlength="63"
+            />
+            <span class="checker-suffix" id="hero-domain-suffix">.is-a.store</span>
+            <button type="submit" class="btn btn-primary">Check</button>
+          </div>
+          <div id="hero-check-result" class="check-result" aria-live="polite" hidden></div>
+        </form>
+
+        <div class="hero-cta-row">
+          <a href="#register" class="btn btn-primary btn-lg">Register a Subdomain</a>
+          <a href="#directory" class="btn btn-secondary btn-lg">Browse Directory</a>
+        </div>
+
+        <!-- Live Registry Stats -->
+        <div class="stats-grid" aria-label="Registry statistics">
+          <div class="stat-card">
+            <span class="stat-label">Registered Subdomains</span>
+            <strong class="stat-value" id="stat-total">--</strong>
+            <span class="stat-meta" id="stat-total-meta">Loading registry index...</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Pending PRs</span>
+            <strong class="stat-value" id="stat-pending">--</strong>
+            <span class="stat-meta" id="stat-pending-meta">Checking GitHub API...</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Supported Records</span>
+            <strong class="stat-value" id="stat-records">5</strong>
+            <span class="stat-meta">CNAME, A, AAAA, TXT, MX</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">DNS Provisioning</span>
+            <strong class="stat-value" id="stat-dns-mode">--</strong>
+            <span class="stat-meta" id="stat-dns-meta">Reading config...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section section-muted" aria-labelledby="how-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="how-heading">How Registration Works</h2>
+          <p>No proprietary dashboard, no database lock-in, and no exposed API tokens. Every record is audited transparently in Git.</p>
+        </div>
+
+        <ol class="steps-grid">
+          <li class="step-card">
+            <span class="step-num">01</span>
+            <h3>Verify Availability</h3>
+            <p>Search the live registry index and open Pull Requests to confirm your subdomain is free and complies with naming rules.</p>
+          </li>
+          <li class="step-card">
+            <span class="step-num">02</span>
+            <h3>Configure DNS Record</h3>
+            <p>Generate a schema-compliant JSON record for CNAME, A, AAAA, TXT, or MX with instant bogon-IP and RFC conflict checks.</p>
+          </li>
+          <li class="step-card">
+            <span class="step-num">03</span>
+            <h3>Open a Pull Request</h3>
+            <p>Click "Open in GitHub Editor" right from your mobile or desktop browser. GitHub forks the repo and submits your PR.</p>
+          </li>
+          <li class="step-card">
+            <span class="step-num">04</span>
+            <h3>Automated CI &amp; Deploy</h3>
+            <p>GitHub Actions validates syntax, duplicates, and security policies. Once merged by a maintainer, index &amp; DNS sync automatically.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Registration Builder Section -->
+    <section id="register" class="section" aria-labelledby="register-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="register-heading">Subdomain Registration Builder</h2>
+          <p>Validate your configuration locally and generate the exact JSON file required for a Pull Request in <code>registry/domains/</code>.</p>
+        </div>
+
+        <div class="builder-grid">
+          <!-- Left: Form -->
+          <form id="registration-form" class="card form-card" novalidate>
+            <div class="field-group">
+              <div class="field-label-row">
+                <label for="reg-subdomain">Desired Subdomain <span class="req">*</span></label>
+                <span id="reg-availability-pill" class="pill pill-neutral">Enter a name</span>
+              </div>
+              <div class="input-with-suffix">
+                <input
+                  id="reg-subdomain"
+                  name="subdomain"
+                  type="text"
+                  autocomplete="off"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  placeholder="my-store"
+                  required
+                />
+                <span class="input-suffix" id="reg-domain-suffix">.is-a.store</span>
+              </div>
+              <p id="reg-availability-msg" class="field-hint">2–63 chars: lowercase letters, digits, and interior hyphens.</p>
+            </div>
+
+            <div class="field-row-2">
+              <div class="field-group">
+                <label for="reg-github">GitHub Username <span class="req">*</span></label>
+                <input
+                  id="reg-github"
+                  name="github"
+                  type="text"
+                  autocomplete="username"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  placeholder="octocat"
+                  required
+                />
+              </div>
+              <div class="field-group">
+                <label for="reg-email">Contact Email <span class="opt">(optional)</span></label>
+                <input
+                  id="reg-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="reg-description">Project Description <span class="req">*</span></label>
+              <input
+                id="reg-description"
+                name="description"
+                type="text"
+                maxlength="200"
+                placeholder="Open-source storefront template deployed on GitHub Pages"
+                required
+              />
+              <p class="field-hint">5–200 characters explaining what this subdomain hosts.</p>
+            </div>
+
+            <div class="field-group">
+              <label for="reg-repo">Project / Repo URL <span class="opt">(recommended)</span></label>
+              <input
+                id="reg-repo"
+                name="repo"
+                type="url"
+                placeholder="https://github.com/octocat/my-store"
+              />
+              <p class="field-hint">Required if pointing a CNAME to a GitHub Organization Pages site.</p>
+            </div>
+
+            <div class="field-row-2">
+              <div class="field-group">
+                <label for="reg-record-type">DNS Record Type <span class="req">*</span></label>
+                <select id="reg-record-type" name="recordType">
+                  <option value="CNAME">CNAME — Alias to hostname (GitHub Pages, Cloudflare Pages, Vercel)</option>
+                  <option value="A">A — Public IPv4 address(es)</option>
+                  <option value="AAAA">AAAA — Public IPv6 address(es)</option>
+                  <option value="TXT">TXT — Verification / Metadata record(s)</option>
+                  <option value="MX">MX — Mail exchanger record(s)</option>
+                </select>
+              </div>
+              <div class="field-group" id="mx-priority-group" hidden>
+                <label for="reg-mx-priority">MX Priority <span class="req">*</span></label>
+                <input
+                  id="reg-mx-priority"
+                  name="mxPriority"
+                  type="number"
+                  min="0"
+                  max="65535"
+                  value="10"
+                />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="reg-target" id="reg-target-label">Target Hostname (CNAME) <span class="req">*</span></label>
+              <textarea
+                id="reg-target"
+                name="target"
+                rows="2"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="octocat.github.io"
+                required
+              ></textarea>
+              <p id="reg-target-hint" class="field-hint">Bare hostname only — no <code>https://</code>, path, or trailing dot.</p>
+            </div>
+
+            <div class="field-group checkbox-group" id="proxied-group">
+              <label class="checkbox-label">
+                <input id="reg-proxied" type="checkbox" />
+                <span>Request Cloudflare HTTP Proxy (orange cloud)</span>
+              </label>
+              <p class="field-hint">Leave unchecked for GitHub Pages custom domains so GitHub can provision TLS certificates directly.</p>
+            </div>
+
+            <div id="reg-errors" class="alert alert-error" role="alert" hidden></div>
+          </form>
+
+          <!-- Right: Live JSON Output & PR Handoff -->
+          <div class="card output-card">
+            <div class="output-header">
+              <div>
+                <span class="output-label">Generated Registry File</span>
+                <code id="output-filepath" class="filepath">registry/domains/my-store.json</code>
+              </div>
+              <span id="output-valid-badge" class="pill pill-neutral">Incomplete</span>
+            </div>
+
+            <pre class="code-block"><code id="json-preview">{}</code></pre>
+
+            <div class="output-actions">
+              <a
+                id="btn-open-github"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary btn-block disabled"
+                aria-disabled="true"
+              >
+                Open in GitHub Editor &amp; Submit PR &rarr;
+              </a>
+              <div class="output-secondary-actions">
+                <button id="btn-copy-json" type="button" class="btn btn-secondary" disabled>Copy JSON</button>
+                <button id="btn-download-json" type="button" class="btn btn-secondary" disabled>Download .json</button>
+              </div>
+            </div>
+
+            <div class="pr-instructions">
+              <h4>How to submit (works on Android browser)</h4>
+              <ol>
+                <li>Fill out the form until the status badge shows <strong>Ready for PR</strong>.</li>
+                <li>Tap <strong>Open in GitHub Editor &amp; Submit PR</strong> — GitHub pre-fills the filename and JSON content.</li>
+                <li>Tap <strong>Commit changes...</strong> &rarr; <strong>Propose changes</strong> &rarr; <strong>Create pull request</strong>.</li>
+                <li>Wait for the automated <em>Validate Subdomain PR</em> workflow to pass, then a maintainer will review and merge.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Registry Directory Section -->
+    <section id="directory" class="section section-muted" aria-labelledby="directory-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="directory-heading">Public Registry Directory</h2>
+          <p>Live searchable index compiled from merged JSON files in <code>registry/domains/</code>.</p>
+        </div>
+
+        <div class="directory-toolbar">
+          <div class="search-wrap">
+            <label for="dir-search" class="sr-only">Search registered subdomains</label>
+            <input
+              id="dir-search"
+              type="search"
+              placeholder="Search subdomain, destination, owner, or description..."
+            />
+          </div>
+          <div class="filter-chips" role="group" aria-label="Filter by DNS record type">
+            <button type="button" class="chip active" data-filter="ALL">All</button>
+            <button type="button" class="chip" data-filter="CNAME">CNAME</button>
+            <button type="button" class="chip" data-filter="A">A</button>
+            <button type="button" class="chip" data-filter="AAAA">AAAA</button>
+            <button type="button" class="chip" data-filter="TXT">TXT</button>
+            <button type="button" class="chip" data-filter="MX">MX</button>
+          </div>
+        </div>
+
+        <div id="directory-error" class="alert alert-error" role="alert" hidden></div>
+
+        <div class="table-wrap card">
+          <table class="directory-table">
+            <thead>
+              <tr>
+                <th>Subdomain</th>
+                <th>Record</th>
+                <th>Destination</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th class="col-action">Details</th>
+              </tr>
+            </thead>
+            <tbody id="directory-tbody">
+              <tr>
+                <td colspan="6" class="empty-cell">Loading registry data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p id="directory-count" class="table-footnote"></p>
+      </div>
+    </section>
+
+    <!-- Documentation Section -->
+    <section id="docs" class="section" aria-labelledby="docs-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="docs-heading">Documentation &amp; Policies</h2>
+          <p>Everything you need to configure DNS safely, avoid rejection, and understand project governance.</p>
+        </div>
+
+        <div class="docs-tabs" role="tablist" aria-label="Documentation topics">
+          <button type="button" class="doc-tab active" role="tab" aria-selected="true" data-doc="registration">Registration</button>
+          <button type="button" class="doc-tab" role="tab" aria-selected="false" data-doc="dns">DNS &amp; Security</button>
+          <button type="button" class="doc-tab" role="tab" aria-selected="false" data-doc="abuse">Abuse &amp; Removal</button>
+          <button type="button" class="doc-tab" role="tab" aria-selected="false" data-doc="legal">Terms &amp; Privacy</button>
+          <button type="button" class="doc-tab" role="tab" aria-selected="false" data-doc="troubleshooting">Troubleshooting</button>
+        </div>
+
+        <div class="card docs-panel" id="docs-panel" tabindex="0"></div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section section-muted" aria-labelledby="faq-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="faq-heading">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>Is the root domain "is-a.store" completely free to register?</summary>
+            <p>
+              <strong>No.</strong> <code>.store</code> is a commercial Top-Level Domain operated by Radix and cannot be registered for ₹0. GitHub Pages only hosts static files on <code>*.github.io</code> — it does not register custom TLDs. Until a paid <code>is-a.store</code> domain or a genuinely free NS-delegated third-level domain (such as <code>eu.org</code> or DigitalPlat <code>dpdns.org</code>) is delegated to Cloudflare DNS, this registry operates transparently in <strong>Staging / Indexed Mode</strong>.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary>Why can't I combine CNAME with TXT or MX records on the same subdomain?</summary>
+            <p>
+              Per RFC 1034 &sect;3.6.2 and RFC 2181 &sect;10.1, a <code>CNAME</code> record must be the sole record at a DNS node. Combining it with <code>A</code>, <code>AAAA</code>, <code>TXT</code>, or <code>MX</code> causes resolvers to fail or behave unpredictably. If you need <code>TXT</code> or <code>MX</code> records alongside web hosting, use <code>A</code> and/or <code>AAAA</code> records instead of <code>CNAME</code>.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary>Can I register a subdomain using only an Android phone?</summary>
+            <p>
+              Yes. Use the Registration Builder above, tap <strong>Open in GitHub Editor &amp; Submit PR</strong>, and commit directly inside Chrome or any mobile browser. No PC, laptop, Termux, or Git CLI is needed.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary>How do you prevent subdomain takeovers and phishing?</summary>
+            <p>
+              Automated GitHub Actions block private/bogon IPs, wildcard records, brand-impersonation names, punycode lookalikes (<code>xn--</code>), DNS loops, and mismatched <code>*.github.io</code> CNAMEs. Each user is capped at 3 subdomains, and maintainers can instantly suspend abusive entries to remove them from Cloudflare DNS while locking the name against re-registration.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary>Where are GitHub secrets or API tokens stored?</summary>
+            <p>
+              Nowhere in the frontend or repository code. Pull-request validation runs with read-only permissions and zero secrets. Cloudflare API tokens exist solely as encrypted GitHub Actions Repository Secrets accessible only on trusted, maintainer-merged <code>main</code> branch runs.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong id="footer-brand">is-a.store</strong>
+        <p class="footer-note">Open-source GitHub-hosted subdomain registry released under the MIT License.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/RivetandRaster/is-a-store" target="_blank" rel="noopener noreferrer">Repository</a>
+        <a href="https://github.com/RivetandRaster/is-a-store/blob/main/docs/abuse.md" target="_blank" rel="noopener noreferrer">Report Abuse</a>
+        <a href="https://github.com/RivetandRaster/is-a-store/blob/main/docs/terms.md" target="_blank" rel="noopener noreferrer">Terms</a>
+        <a href="https://github.com/RivetandRaster/is-a-store/blob/main/docs/privacy.md" target="_blank" rel="noopener noreferrer">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Inspect Record Modal -->
+  <dialog id="record-modal" class="modal" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h3 id="modal-title">Subdomain Details</h3>
+      <button id="modal-close" type="button" class="btn btn-icon" aria-label="Close modal">&times;</button>
+    </div>
+    <div id="modal-body" class="modal-body"></div>
+  </dialog>
+
+  <script src="assets/js/validator.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>
